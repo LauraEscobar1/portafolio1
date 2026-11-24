@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useData, useT } from "@/lib/i18n";
 import { useReducedMotion, useSectionProgress, useViewportWidth } from "@/lib/hooks";
 
@@ -15,6 +15,9 @@ export default function Projects() {
   const PP = p * (NP - 1);
   const active = Math.round(PP);
   const mobile = vw < 900;
+  const [touch, setTouch] = useState(false);
+  useEffect(() => setTouch(window.matchMedia("(hover: none), (max-width: 900px)").matches), []);
+  const flat = reduced || touch;
   const cardScale = mobile ? Math.min(1, (vw - 40) / 520) * 0.92 : vw < 1200 ? 0.82 : 1;
 
   const goTo = (k: number) => {
@@ -47,8 +50,9 @@ export default function Projects() {
           {PROJECTS.map((c, k) => {
             const d = k - PP;
             const ad = Math.abs(d);
-            const tf = reduced
-              ? `translateY(${(d * 400).toFixed(1)}px) scale(${cardScale})`
+            if (flat && ad > 1.2) return null;
+            const tf = flat
+              ? `translateY(${(d * 400 * (mobile ? 0.7 : 1)).toFixed(1)}px) scale(${cardScale})`
               : `translateY(${(d * 400 * (mobile ? 0.7 : 1)).toFixed(1)}px) translateZ(${(-ad * 280).toFixed(1)}px) rotateX(${(-d * 32).toFixed(2)}deg) rotateY(${(-14 + d * 6).toFixed(2)}deg) rotateZ(${(d * -9 + (k % 2 ? 3 : -3)).toFixed(2)}deg) scale(${cardScale})`;
             return (
               <div
@@ -56,10 +60,10 @@ export default function Projects() {
                 className="proj-card-pos"
                 style={{ zIndex: 100 - Math.round(ad * 10), opacity: Math.max(0, 1 - ad * (mobile ? 0.8 : 0.55)), transform: tf }}
               >
-                <div className="floaty proj-float" style={{ animationDelay: `${-k * 1.3}s` }}>
+                <div className={flat ? "proj-float" : "floaty proj-float"} style={{ animationDelay: `${-k * 1.3}s` }}>
                   <div className="proj-card proj-card--cover" style={{ background: c.bg, color: c.fg }}>
                     <img src={c.image} alt="" draggable={false} />
-                    <div className="proj-shine" />
+                    {!flat && <div className="proj-shine" />}
                   </div>
                 </div>
               </div>

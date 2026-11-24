@@ -77,7 +77,7 @@ export default function ParticleWord({ auto, onDone, word: wordProp }: { auto?: 
       o.fillStyle = "#000";
       o.fillText(word, 700, 215);
       const data = o.getImageData(0, 0, 1400, 420).data;
-      const step = window.innerWidth < 760 ? 8 : window.matchMedia("(hover: none)").matches ? 7 : 5;
+      const step = window.innerWidth < 760 ? 10 : window.matchMedia("(hover: none)").matches ? 9 : 5;
       const out: Pt[] = [];
       let seed = 7;
       const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);

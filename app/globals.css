@@ -5650,3 +5650,9 @@ html.mode-tower .proj-labels {
 /* El borde pistacho ya viene dentro de la imagen: sin filtros pesados */
 .ab-memo img { filter: drop-shadow(0 18px 22px rgba(18, 38, 63, 0.25)); }
 @media (max-width: 900px), (hover: none) { .ab-memo img { filter: none; } }
+/* Celular: "Experiencia" sin desenfoque y proyectos sin 3D */
+@media (max-width: 900px), (hover: none) {
+  .exp-glow { filter: none !important; opacity: 1 !important; text-shadow: none !important; letter-spacing: -0.03em !important; }
+  .proj-stage, .proj-cards, .proj-card-pos { transform-style: flat !important; perspective: none !important; }
+  .proj-card { box-shadow: 0 18px 30px -16px rgba(18, 38, 63, 0.35); }
+}
